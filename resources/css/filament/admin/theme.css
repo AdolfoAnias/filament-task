@@ -1,0 +1,6 @@
+@import 'flag-icons/css/flag-icons.min.css';
+
+.fi-xs {
+    width: 20px !important;
+    height: 14px !important;
+}
