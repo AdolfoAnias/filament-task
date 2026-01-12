@@ -10,7 +10,13 @@ class PricingRulesInfolist
     {
         return $schema
             ->components([
-                //
+                TextEntry::make('apply_to'),
+                TextEntry::make('created_at')
+                    ->dateTime()
+                    ->placeholder('-'),
+                TextEntry::make('updated_at')
+                    ->dateTime()
+                    ->placeholder('-'),
             ]);
     }
 }

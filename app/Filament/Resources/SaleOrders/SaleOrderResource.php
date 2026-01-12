@@ -63,4 +63,37 @@ class SaleOrderResource extends Resource
         return __('app.sale_orders');
     }
 
+    protected function afterCreate(): void
+    {
+        $this->createSaleOrderItems();
+    }
+
+    protected function afterSave(): void
+    {
+        // Limpiar items anteriores
+        $this->record->items()->delete();
+
+        // Crear nuevos items
+        $this->createSaleOrderItems();
+    }
+
+    private function createSaleOrderItems(): void
+    {
+        $items = $this->form->getState()['items'] ?? [];
+
+        foreach ($items as $item) {
+            SaleOrderItem::create([
+                'sale_order_id' => $this->record->id,
+                'product_id' => $item['product_id'],
+                'quantity' => $item['quantity'],
+                'price' => $item['price'],
+                'subtotal' => $item['subtotal'],
+            ]);
+        }
+    }
+
+
+
+
+
 }

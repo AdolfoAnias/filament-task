@@ -28,7 +28,7 @@ class ClientResource extends Resource
 
     public static function getRecordTitle($record): string
     {
-        return __("filament.resources.app.client") . ': ' . $record->name;
+        return __("app.client") . ': ' . $record->name;
     }
 
     public static function form(Schema $schema): Schema

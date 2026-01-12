@@ -12,6 +12,7 @@ class ClientForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('app.name'))
                     ->required(),
             ]);
     }

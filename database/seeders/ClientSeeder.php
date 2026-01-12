@@ -16,21 +16,21 @@ class ClientSeeder extends Seeder
         $items = [
             [
                 'id' => 1,
-                'name' => 'Taza',
+                'name' => 'SOLUTEL',
                 'pricing_list_id' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 'id' => 2,
-                'name' => 'Vaso',
+                'name' => 'ETECSA',
                 'pricing_list_id' => 2,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
                 'id' => 3,
-                'name' => 'Plato',
+                'name' => 'UNE',
                 'created_at' => now(),
                 'updated_at' => now()
             ],

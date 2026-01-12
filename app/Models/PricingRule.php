@@ -10,9 +10,9 @@ class PricingRule extends Model
     use HasFactory;
 
     protected $fillable = [
-        'pricing_list_id',
         'apply_to',
-        'apply_id',
+        'client_id',
+        'product_id',
         'type_rule',
         'min_quantity',
         'value',
@@ -20,5 +20,10 @@ class PricingRule extends Model
         'expired_date',
         'active',
     ];
+
+    public function pricingList()
+    {
+        return $this->belongsTo(PricingList::class);
+    }
 
 }

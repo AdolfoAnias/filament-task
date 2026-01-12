@@ -13,4 +13,9 @@ class PricingList extends Model
         'name',
         'apply_to', //product,client
     ];
+
+    public function rules()
+    {
+        return $this->hasMany(PricingRule::class);
+    }
 }

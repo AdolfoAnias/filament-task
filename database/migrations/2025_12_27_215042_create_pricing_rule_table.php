@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('pricing_rules', function (Blueprint $table) {
             $table->id();
             $table->string('apply_to');
-            $table->integer('apply_id')->nullable();
+            $table->integer('client_id')->nullable();
+            $table->integer('product_id')->nullable();
             $table->string('type_rule');
             $table->integer('min_quantity')->nullable();
             $table->decimal('value');

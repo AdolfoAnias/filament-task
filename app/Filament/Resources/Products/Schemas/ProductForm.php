@@ -12,12 +12,15 @@ class ProductForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('app.name'))
                     ->required(),
                 TextInput::make('price')
+                    ->label(__('app.price'))
                     ->required()
                     ->numeric()
                     ->prefix('$'),
                 TextInput::make('qty')
+                    ->label(__('app.qty'))
                     ->required()
                     ->numeric(),
             ]);
