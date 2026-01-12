@@ -169,6 +169,7 @@ class SaleOrderForm
                 Hidden::make('items')
                     ->default([]),
 
+                /*
                 Placeholder::make('items_preview')
                     ->label(__('app.product_summary'))
                     ->content(function ($get) {
@@ -226,7 +227,76 @@ class SaleOrderForm
                     })
                     ->columnSpanFull()
                     ->live(),
+                 */
 
+                Placeholder::make('items_preview')
+                ->label(__('app.product_summary'))
+                ->content(function ($get, $record) {  // ← $record disponible en EDIT
+                    // CARGAR ÍTEMS DESDE BASE DE DATOS en EDIT
+                    $items = [];
+                    if ($record && $record->exists) {
+                        $items = $record->items()->get()->map(function ($item) {
+                            return [
+                                'product_id' => $item->product_id,
+                                'quantity' => $item->quantity,
+                                'price' => $item->price,
+                                'subtotal' => $item->subtotal,
+                            ];
+                        })->toArray();
+                    } else {
+                        $items = $get('items') ?? [];
+                    }
+
+                    if (!count($items)) {
+                        return __('app.no_products');
+                    }
+
+                    $html = '<table class="fi-ta min-w-full text-sm">
+                                <thead>
+                                    <tr>
+                                        <th class="px-2 py-1 text-left font-semibold text-xs">'.__('app.product').'</th>
+                                        <th class="px-2 py-1 text-left font-semibold text-xs">'.__('app.quantity').'</th>
+                                        <th class="px-2 py-1 text-left font-semibold text-xs">'.__('app.price').'</th>
+                                        <th class="px-2 py-1 text-left font-semibold text-xs">'.__('subtotal').'</th>
+                                    </tr>
+                                </thead>
+                                <tbody>';
+
+                    $totalGeneral = 0;
+                    foreach ($items as $item) {
+                        $productName = __('app.no_products');
+                        if (isset($item['product_id'])) {
+                            $product = \App\Models\Product::find($item['product_id']);
+                            $productName = $product ? $product->name : __('app.no_products');
+                        }
+
+                        $subtotal = ($item['subtotal'] ?? 0);
+                        $totalGeneral += $subtotal;
+
+                        $html .= '<tr>
+                                    <td class="px-2 py-1 text-left">'.$productName.'</td>
+                                    <td class="px-2 py-1 text-left">'.$item['quantity'].'</td>
+                                    <td class="px-2 py-1 text-left">$'.number_format($item['price'], 2).'</td>
+                                    <td class="px-2 py-1 text-left font-semibold">$'.number_format($subtotal, 2).'</td>
+                                  </tr>';
+                    }
+
+                    $html .= '</tbody>
+                              <tfoot>
+                                  <tr class="bg-gray-50 h-4">
+                                      <td colspan="4" class="border-t-2 border-gray-200">&nbsp;</td>
+                                  </tr>
+                                  <tr class="bg-gray-50 border-t-2 border-gray-200">
+                                      <td colspan="3" class="px-2 py-2 text-right font-bold text-lg">TOTAL:</td>
+                                      <td class="px-2 py-2 text-left font-bold text-xl text-blue-600">$'.number_format($totalGeneral, 2).'</td>
+                                  </tr>
+                              </tfoot>
+                              </table>';
+
+                    return new \Illuminate\Support\HtmlString($html);
+                })
+                ->columnSpanFull()
+                ->live(),
             ]);
     }
 
